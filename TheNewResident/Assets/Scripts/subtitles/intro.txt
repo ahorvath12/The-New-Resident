@@ -1,0 +1,19 @@
+1
+00:00:01,000 --> 00:00:06,000
+The first person went missing a year ago and several disappearances have since followed. 
+
+2
+00:00:06,000 --> 00:00:11,500
+After a bit of digging, I discovered they were all connected by one thing: ManneCorp. 
+
+3
+00:00:11,500 --> 00:00:20,500
+Each missing person had a connection with an employee of the company. I tried to piece it all together, but there was something missing. 
+
+4
+00:00:20,500 --> 00:00:30,500
+That is, until I received an anonymous tip with an address: 666 Dyre Lane, location of the ManneCorp warehouse outside of town. 
+
+5
+00:00:30,000 --> 00:00:37,000
+Something seemed off, but I figured the lead was worth following...
