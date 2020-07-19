@@ -68,7 +68,6 @@ public class DollController : MonoBehaviour
             {
                 move = true;
                 anim.SetBool("canMove", true);
-                GameObject.Find("Flash").GetComponent<CameraFlash>().enableFlash = true;
             }
             audioSource.Stop();
         }
@@ -126,7 +125,7 @@ public class DollController : MonoBehaviour
             anim.SetTrigger("return");
             anim.SetBool("canMove", false);
             anim.SetInteger("pose", 0);
-            agent.speed += 1;
+            //agent.speed += 1;
             move = false;
         }
     }

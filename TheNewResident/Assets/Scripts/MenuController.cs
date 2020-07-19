@@ -26,11 +26,11 @@ public class MenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var tempColor = img.color;
-        if (tempColor.a >= max || tempColor.a <= min)
-            mult *= -1f;
-        tempColor.a += mult;
-        img.color = tempColor;
+        //var tempColor = img.color;
+        //if (tempColor.a >= max || tempColor.a <= min)
+        //    mult *= -1f;
+        //tempColor.a += mult;
+        //img.color = tempColor;
 
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("d"))
         {

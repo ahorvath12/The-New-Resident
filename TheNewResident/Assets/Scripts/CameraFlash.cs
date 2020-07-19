@@ -15,6 +15,7 @@ public class CameraFlash : MonoBehaviour
     private bool showInstructions;
     private float mult = 0.01f;
     private Vector3 curPos, newPos;
+    float lastTimeChecked;
 
 
     // Start is called before the first frame update
@@ -34,24 +35,30 @@ public class CameraFlash : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        newPos = curPos;
-        curPos = player.transform.position;
         var tempColor = img.color;
-        if (enableFlash && curPos != newPos)
+        if (enableFlash)
         {
             text.GetComponent<Text>().enabled = true;
             text.GetComponent<Text>().text = "Flash Bulbs: " + uses;
-            showInstructions = !showInstructions;
-        }
 
-        if (showInstructions)
-        {
-            var tempColor2 = instructions.GetComponent<Text>().color;
-            if (tempColor2.a >= 1.2f)
-                mult *= -1;
-            tempColor2.a += mult;
-            instructions.GetComponent<Text>().color = tempColor2;
-            
+            if (!showInstructions && instructions.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Default"))
+            {
+                Debug.Log("in default");
+                lastTimeChecked = Time.time;
+                showInstructions = true;
+            }
+            else if (showInstructions && TimeCheck(1))
+            {
+                Debug.Log("in fadein");
+                instructions.GetComponent<Animator>().SetTrigger("FadeIn");
+                lastTimeChecked = Time.time;
+                showInstructions = false;
+            }
+            else if (TimeCheck(2f) && instructions.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("FadeIn"))
+            {
+                Debug.Log("in fadeout");
+                instructions.GetComponent<Animator>().SetTrigger("FadeOut");
+            }
         }
 
         if (enableFlash && Input.GetKeyDown("space") && uses > 0)
@@ -73,6 +80,11 @@ public class CameraFlash : MonoBehaviour
             img.color = tempColor;
         }
 
+    }
+
+    private bool TimeCheck(float waitTime)
+    {
+        return Time.time - lastTimeChecked > waitTime;
     }
    
 }

@@ -8,32 +8,30 @@ using UnityStandardAssets.Characters.FirstPerson;
 public class PlayerFall : MonoBehaviour
 {
     public bool end;
-    public GameObject panel, playerCamera, endCamera, voice;
+    public GameObject panel, playerCamera, endCamera, voice, quitText;
     public GameObject[] mannequins;
 
     private Transform playerTransform, endTransform;
-    private float rotateZ = 90.0f;
-    private float positionY = 0.5f;
-    private float mult = 0.001f; //windows
-    //private float mult = 0.003f; //mac
+    private Animator anim;
 
     private int count;
-    private bool endGame, changeScene;
+    private bool endGame, changeScene, fadeOutAgain;
 
     private void Start()
     {
         count = 0;
         endGame = false;
         changeScene = false;
+        fadeOutAgain = false;
         playerCamera.SetActive(true);
         endTransform = endCamera.transform;
         endCamera.SetActive(false);
+        anim = panel.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        bool change = false;
 
         // knock player over
         if (end)
@@ -66,21 +64,20 @@ public class PlayerFall : MonoBehaviour
 
             playerTransform.rotation = Quaternion.Euler(newRotate);
             playerTransform.position = newPos;
+            quitText.GetComponent<Animator>().SetTrigger("FadeIn");
         }
 
         // move the player to mannequin position
         if (endGame)
         {
-            var tempColor = panel.GetComponent<Image>().color;
-            if (tempColor.a < 1f || tempColor.a > 0f)
-                tempColor.a += mult;
-            panel.GetComponent<Image>().color = tempColor;
+            anim.SetTrigger("FadeOut");
 
-            if (tempColor.a >= 1f)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("End 0"))
             { 
                 playerCamera.transform.position = endTransform.position;
                 playerCamera.transform.rotation = endTransform.rotation;
-                mult *= -1f;
+                anim.SetTrigger("FadeIn");
+                //mult *= -1f;
                 changeScene = true;
 
             }
@@ -91,47 +88,24 @@ public class PlayerFall : MonoBehaviour
         {
             end = false;
             endGame = false;
-            var tempColor = panel.GetComponent<Image>().color;
 
-
-            if (tempColor.a > 0.9f)
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("FadeIn2"))
                 voice.GetComponent<VoiceManager>().Breathing();
-
-            if (tempColor.a < 1f || tempColor.a > 0f)
-                tempColor.a += mult;
-            //else if (tempColor.a >= 1f)
-            //    Debug.Log("change scene");
-            //SceneManager.LoadScene("GameOver");
-
-            if (tempColor.a <= 0f)
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("Wait"))
+                fadeOutAgain = true;
+            else if (fadeOutAgain && anim.GetCurrentAnimatorStateInfo(0).IsName("FadeOut3"))
             {
-                mult *= -1f;
-                count = 1;
+                anim.SetTrigger("End");
             }
-            if (!voice.GetComponent<AudioSource>().isPlaying)
-            {
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("End") && !voice.GetComponent<AudioSource>().isPlaying)
                 SceneManager.LoadScene("GameOver");
-            }
-
-
-            panel.GetComponent<Image>().color = tempColor;
-            
 
         }
-
-        //if (change)
-        //{
-        //    changeScene = !changeScene;
-        //    StartCoroutine("EndGame");
-        //}
-
+            
+        if (Input.GetKeyDown("return") && (end || endGame || changeScene))
+            SceneManager.LoadScene("Menu");
+        
     }
-
-    private IEnumerator EndGame()
-    {
-        Debug.Log("in coroutine");
-        yield return new WaitForSeconds(5.0f);
-        SceneManager.LoadScene("GameOver");
-    }
+    
     
 }

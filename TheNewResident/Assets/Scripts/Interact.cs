@@ -54,10 +54,12 @@ public class Interact : MonoBehaviour
 
             door.GetComponent<Escape>().AllowEscape();
             glassAudio.GetComponent<AudioSource>().Play();
-            foreach(GameObject go in lights)
+            GameObject.Find("Flash").GetComponent<CameraFlash>().enableFlash = true;
+            foreach (GameObject go in lights)
             {
                 go.GetComponent<Light>().enabled = false;
             }
+
         }
     }
 
