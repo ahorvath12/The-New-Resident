@@ -26,11 +26,12 @@ public class Escape : MonoBehaviour
     {
         if (collided)
         {
-            var tempColor = instructions.GetComponent<Text>().color;
-            if (tempColor.a >= max || tempColor.a <= min)
-                mult *= -1f;
-            tempColor.a += mult;
-            instructions.GetComponent<Text>().color = tempColor;
+
+            //var tempColor = instructions.GetComponent<Text>().color;
+            //if (tempColor.a >= max || tempColor.a <= min)
+            //    mult *= -1f;
+            //tempColor.a += mult;
+            //instructions.GetComponent<Text>().color = tempColor;
             audio.GetComponent<AudioSource>().Play();
 
             if (Input.GetKeyDown("e"))
@@ -53,6 +54,7 @@ public class Escape : MonoBehaviour
             collided = true;
             Debug.Log("collided");
             instructions.GetComponent<Text>().enabled = true;
+            //instructions.GetComponent<Animator>().SetTrigger("FadeIn");
         }
     }
 
@@ -62,6 +64,7 @@ public class Escape : MonoBehaviour
         {
             collided = false;
             instructions.GetComponent<Text>().enabled = false;
+            instructions.GetComponent<Animator>().SetTrigger("FadeOut");
         }
     }
 }

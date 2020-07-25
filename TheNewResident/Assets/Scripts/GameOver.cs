@@ -21,11 +21,11 @@ public class GameOver : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var tempColor = text.color;
-        if (tempColor.a >= max || tempColor.a <= min)
-            mult *= -1f;
-        tempColor.a += mult;
-        text.color = tempColor;
+        //var tempColor = text.color;
+        //if (tempColor.a >= max || tempColor.a <= min)
+        //    mult *= -1f;
+        //tempColor.a += mult;
+        //text.color = tempColor;
 
         if (Input.anyKey)
         {

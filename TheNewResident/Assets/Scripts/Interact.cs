@@ -28,13 +28,14 @@ public class Interact : MonoBehaviour
     {
         if (allow)
         {
-            instruction.GetComponent<Text>().enabled = true;
 
-            var tempColor = instruction.GetComponent<Text>().color;
-            if (tempColor.a >= max || tempColor.a <= min)
-                mult *= -1f;
-            tempColor.a += mult;
-            instruction.GetComponent<Text>().color = tempColor;
+            //instruction.GetComponent<Text>().enabled = true;
+
+            //var tempColor = instruction.GetComponent<Text>().color;
+            //if (tempColor.a >= max || tempColor.a <= min)
+            //    mult *= -1f;
+            //tempColor.a += mult;
+            //instruction.GetComponent<Text>().color = tempColor;
         }
         else
         {
@@ -68,6 +69,8 @@ public class Interact : MonoBehaviour
         if (collision.gameObject == player && !pickedUp)
         {
             allow = true;
+            instruction.GetComponent<Text>().enabled = true;
+            //instruction.GetComponent<Animator>().SetTrigger("FadeIn");
         }
     }
 
@@ -76,6 +79,8 @@ public class Interact : MonoBehaviour
         if (other.gameObject == player)
         {
             allow = false;
+            instruction.GetComponent<Text>().enabled = false;
+            //instruction.GetComponent<Animator>().SetTrigger("FadeOut");
         }
     }
 
