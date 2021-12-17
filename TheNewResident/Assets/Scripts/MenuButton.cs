@@ -10,12 +10,12 @@ public class MenuButton : MonoBehaviour
     private Text text;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         button = this.GetComponent<Button>();
         text = (Text)button.GetComponentInChildren<Text>();
     }
-    
+
 
     public void Enter()
     {

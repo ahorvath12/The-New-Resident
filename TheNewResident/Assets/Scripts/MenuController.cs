@@ -1,11 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
     public GameObject panel;
+    public GameObject menu, credits;
     public GameObject[] buttons;
+    public GameObject[] creditsPages;
 
     private Image img;
     private int index = 0;
@@ -20,7 +24,7 @@ public class MenuController : MonoBehaviour
         img = panel.GetComponent<Image>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        buttons[index].GetComponent<MenuButton>().Enter();
+        buttons[0].GetComponent<MenuButton>().Enter();
     }
 
     // Update is called once per frame
@@ -31,7 +35,6 @@ public class MenuController : MonoBehaviour
         //    mult *= -1f;
         //tempColor.a += mult;
         //img.color = tempColor;
-
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("d"))
         {
             buttons[index].GetComponent<MenuButton>().Exit();
@@ -51,13 +54,24 @@ public class MenuController : MonoBehaviour
 
         if (Input.GetKeyDown("return"))
         {
-            if (index == 0)
-                PlayGame();
-            else
-                QuitGame();
+            switch (index)
+            {
+                case 0:
+                    PlayGame();
+                    break;
+                case 1:
+                    QuitGame();
+                    break;
+                case 2:
+                    StartCredits();
+                    break;
+            }
         }
+
+        if (Input.GetKeyDown("escape") && credits.activeSelf)
+            EndCredits();
     }
-    
+
 
     public void PlayGame()
     {
@@ -68,5 +82,33 @@ public class MenuController : MonoBehaviour
     {
         Debug.Log("Quit");
         Application.Quit();
+    }
+
+    public void StartCredits()
+    {
+        credits.SetActive(true);
+        menu.SetActive(false);
+        StartCoroutine(RollCredits());
+    }
+
+    public void EndCredits()
+    {
+        StopCoroutine(RollCredits());
+        credits.SetActive(false);
+        menu.SetActive(true);
+    }
+
+
+    private IEnumerator RollCredits()
+    {
+        int index = 0;
+        while (index < creditsPages.Length)
+        {
+            creditsPages[index].SetActive(true);
+            yield return new WaitForSeconds(4);
+            index++;
+            creditsPages[index - 1].SetActive(false);
+        }
+        EndCredits();
     }
 }
